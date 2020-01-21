@@ -21,5 +21,6 @@ public class MenuBaseController {
     @RequestMapping(path = "{userId}", method = RequestMethod.GET)
     public ResultInfo<Object> queryMenuByUserId(@PathVariable Long userId) {
 
+        return new ResultInfo<>().success("ok");
     }
 }
