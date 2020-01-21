@@ -1,0 +1,15 @@
+server:
+  port: 8081
+spring:
+  redis:
+    database: 0
+    host: redis1.ibn.local
+    port: 6379
+    password:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://mysql1.ibn.local:3308/mylog?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  mapper-locations: classpath:mybatis/*Dao.xml
