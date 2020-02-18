@@ -27,9 +27,9 @@ public class ResultInfo<T> implements Serializable {
         return this;
     }
 
-    public ResultInfo<T> success(T response,String message) {
+    public ResultInfo<T> response(T response) {
         this.status = StatusCodeEnum.OK.getCode();
-        this.message = message;
+        this.message = StatusCodeEnum.OK.getDesc();
         this.data = response;
         return this;
     }

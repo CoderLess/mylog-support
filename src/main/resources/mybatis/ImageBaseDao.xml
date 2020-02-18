@@ -1,0 +1,24 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ibn.dao.ImageBaseDao">
+    <resultMap id="imageBaseMap" type="com.ibn.entity.ImageBaseDO">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="image" property="image" jdbcType="BLOB" />
+        <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    </resultMap>
+    <insert id="saveImage" parameterType="com.ibn.entity.ImageBaseDO" keyProperty="id" useGeneratedKeys="true">
+        insert into image_base(id,name,image,create_time)
+        values (#{id},#{name},#{image},#{createTime})
+    </insert>
+    <select id="queryImage" resultMap="imageBaseMap">
+        select id,name,image,create_time as 'createTime' from image_base
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+        </where>
+    </select>
+</mapper>

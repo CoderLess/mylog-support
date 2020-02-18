@@ -1,0 +1,70 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ibn.dao.ArticleBaseDao">
+    <select id="queryArticleBaseByDTO" resultType="com.ibn.entity.ArticleBaseDO"
+            parameterType="com.ibn.domain.ArticleBaseDTO">
+        select
+        id as 'id',
+        menu_id as 'menuId',
+        title as 'title',
+        content as 'content',
+        create_time as 'createTime',
+        access_time as 'accessTime',
+        version as 'version'
+        from article_base
+        <where>
+            <if test="menuId != null">
+                and menu_id = #{menuId}
+            </if>
+        </where>
+    </select>
+    <select id="queryArticleBaseById" parameterType="java.lang.Long" resultType="com.ibn.entity.ArticleBaseDO">
+        select
+        id as 'id',
+        menu_id as 'menuId',
+        title as 'title',
+        content as 'content',
+        create_time as 'createTime',
+        access_time as 'accessTime',
+        version as 'version'
+        from article_base
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+    <insert id="saveArticle" parameterType="com.ibn.entity.ArticleBaseDO">
+        insert into article_base(menu_id,title,content,create_time,access_time)
+        values (#{menuId},#{title},#{content},#{createTime},#{accessTime})
+    </insert>
+    <update id="updateArticle" parameterType="com.ibn.entity.ArticleBaseDO">
+        update article_base
+        <set>
+            <if test="menuId != null">
+                menu_id = #{menuId},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="accessTime != null">
+                access_time = #{accessTime}
+            </if>
+            <if test="version != null">
+                version = #{version}+1
+            </if>
+        </set>
+        where id=#{id} and version=#{version}
+    </update>
+    <delete id="deleteArticle" parameterType="java.lang.Long">
+        delete from article_base where id = #{id}
+    </delete>
+</mapper>

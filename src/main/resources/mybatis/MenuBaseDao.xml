@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ibn.dao.MenuBaseDao">
+    <!-- collection中的column属性可以为多个值，这里只有一个，它作为下面递归查询传递进去的参数 -->
+    <!-- select的值为下面递归查询的select标签的id值 -->
+    <resultMap type="com.ibn.domain.MenuBaseDTO" id="menuTree">
+        <result column="id" property="id" />
+        <result column="menu_name" property="menuName"/>
+        <result column="create_time" property="createTime"/>
+        <collection column="id" property="subMenuList" select="querySubMenu"/>
+    </resultMap>
+
+    <!-- 先查询菜单根级目录 -->
+    <!-- 这里的返回结果必须为resultMap，并且值为上面构建的resultMap的id的值 -->
+    <select id="queryMenuBaseTree" resultMap="menuTree">
+        select id,menu_name,create_time from menu_base
+        where user_id = #{userId} and parent_id = 0
+    </select>
+
+    <!-- 再利用上次查询结果colliection中column的值id做递归查询，查出所有子菜单 -->
+    <!-- 这里的返回结果必须为resultMap，并且值为上面构建的resultMap的id的值 -->
+    <select id="querySubMenu" resultMap="menuTree" >
+        select id,menu_name,create_time from menu_base where parent_id = #{id}
+    </select>
+    <insert id="addMenuBase" parameterType="com.ibn.entity.MenuBaseDO" useGeneratedKeys="true" keyProperty="id">
+        insert into menu_base(user_id,parent_id,menu_name,create_time)
+        values (#{userId},#{parentId},#{menuName},#{createTime})
+    </insert>
+    <delete id="deleteMenuBase" parameterType="java.lang.Long">
+        delete from menu_base where id=#{id}
+    </delete>
+    <update id="updateMenuBase" parameterType="com.ibn.entity.MenuBaseDO">
+        update menu_base
+        <set>
+            <if test="menuName != null and menuName != ''">
+                menu_name=#{menuName},
+            </if>
+            <if test="accessTime != null">
+                access_time=#{accessTime},
+            </if>
+            version=version+1
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

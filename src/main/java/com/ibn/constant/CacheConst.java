@@ -15,4 +15,10 @@ public class CacheConst {
      * @createTime：2020/1/20 15:55
      */
     public static final String IMAGE_CODE = "imageCode_";
+    /**
+     * @author: RenBin
+     * @description: 每个用户对应的事项数据
+     * @date: 2020/2/12 21:36
+     */
+    public static final String ITEM = "item_";
 }
